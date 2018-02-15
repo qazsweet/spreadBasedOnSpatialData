@@ -1,0 +1,39 @@
+to setup-turtles
+  create-turtles number-people
+    [ setxy random-xcor random-ycor
+      set age random lifespan
+      set sick-time 0
+      set remaining-immunity 0
+      set size 1.5  ;; easier to see
+      get-healthy ]
+  ask n-of 10 turtles
+    [ get-sick ]
+end
+
+to setup-turtles 
+  set people-dataset gis:load-dataset "Data_exercise/agents_locat.shp" 
+  foreach gis:feature-list-of people-dataset [ x -> 
+    foreach gis:vertex-lists-of x [ y -> 
+      let location gis:location-of first y 
+      create-turtles 1 [ 
+        set color green
+        set xcor item 0 location 
+        set ycor item 1 location 
+        set age random lifespan 
+        set sick-time 0 
+        set remaining-immunity 0 
+        set size 4 ;; easier to see 
+        get-healthy ]
+    ]
+  ]
+  ask n-of 50 turtles 
+    [ get-sick ]
+end
+
+
+;; Turtles move about at random.
+to move ;; turtle procedure
+  rt random 100
+  lt random 100
+  fd 1
+end
